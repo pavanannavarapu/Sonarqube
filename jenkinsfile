@@ -1,0 +1,22 @@
+node
+{
+    stage('cloning from Github') {
+
+    }
+    stage ('Sonarqube Analysis') {
+        def scannerHome = tool 'sonarqube'
+        withSonarQubeEnv('SonarQube') {
+            sh """var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar-scanner/bin/sonar-scanner \
+            -D sonar.projectVersion=1.0-SNAPSHOT \
+            -D sonar.login=admin \
+            -D sonar.password=admin1 \
+            -D sonar.projectBaseDir=/var/lib/jenkins/workspace/sonar-integration-pipeline/ \
+            -D sonar.projectKey=project \
+            -D sonar.sourceEncoding=UTF-8 \
+            -D sonar.language=python \
+            -D sonar.sources=project/src/main \
+            -D sonar.tests=project/src/test \
+            -D sonar.host.url=localhost:9000/"""
+        }
+    }
+}
